@@ -41,6 +41,13 @@ public class MainActivity extends Activity {
 
 		
 		db = new DatabaseHandler(this);
+		
+		List<Product> products = db.getAllProducts();
+		for(Product pr : products)
+        {
+			product_names.add(pr._name);
+        }
+
 		//db.onCreate(db);
       /*
         System.out.println("Reading all contacts..");
@@ -80,6 +87,7 @@ public class MainActivity extends Activity {
 		    public void onClick(View v) {
 		        // TODO Auto-generated method stub
 		    	addData();
+		    	adapter.notifyDataSetChanged();
 		    }
 		};
 		
