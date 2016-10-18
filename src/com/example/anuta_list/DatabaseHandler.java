@@ -44,7 +44,7 @@ public class DatabaseHandler extends SQLiteOpenHelper implements IDatabaseHandle
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(KEY_NAME, Product.getName());
-        values.put(KEY_SECT_NO, Product.getPhoneNumber());
+        values.put(KEY_SECT_NO, 1);
 
         db.insert(TABLE_LIST, null, values);
         db.close();
