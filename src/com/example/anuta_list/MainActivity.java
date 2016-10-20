@@ -42,26 +42,18 @@ public class MainActivity extends Activity {
 		
 		db = new DatabaseHandler(this);
 		
+		//set_product_names();
+		//заполняем массив данными из базы
 		List<Product> products = db.getAllProducts();
 		for(Product pr : products)
         {
+			//adapter.add(pr._name);
 			product_names.add(pr._name);
+			
         }
-
-		//db.onCreate(db);
-      /*
-        System.out.println("Reading all contacts..");
-        List<Contact> contacts = db.getAllProducts();
-        for (Contact cn : contacts) {
-            String log = "Id: "+cn.getID()+" ,Name: " + cn.getName() + " ,Phone: " + cn.getPhoneNumber();
-            System.out.print("Name: ");
-            System.out.println(log);
-        }
-*/
-        //db.deleteAll();
-		
+			
 		adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, product_names);
-
+		adapter.setNotifyOnChange(true);
 		
 				
 		// Привяжем массив через адаптер к ListView		
@@ -74,7 +66,10 @@ public class MainActivity extends Activity {
 					long id) {
 				Toast.makeText(getApplicationContext(), ((TextView) itemClicked).getText(),
 				        Toast.LENGTH_SHORT).show();
-				   product_names.remove(position);
+				   String txt_clicked = (String)((TextView) itemClicked).getText();
+				   Product pr = new Product(0,txt_clicked ,0);
+				   db.deleteProduct(pr);
+				   set_product_names();
 				   adapter.notifyDataSetChanged();
 			}
 		});
@@ -87,6 +82,7 @@ public class MainActivity extends Activity {
 		    public void onClick(View v) {
 		        // TODO Auto-generated method stub
 		    	addData();
+		    	set_product_names();
 		    	adapter.notifyDataSetChanged();
 		    }
 		};
@@ -100,7 +96,7 @@ public class MainActivity extends Activity {
 		String w=editText.getText().toString();
 		if (w.length() == 0) return;
 		db.addProduct(new Product(w, "1"));
-		//product_names.add(0, w);
+		set_product_names();
 		adapter.notifyDataSetChanged();		
 		editText.setText("");
 	
@@ -146,6 +142,17 @@ public class MainActivity extends Activity {
 	    sms.putExtra("sms_body", messageText);
 	    startActivity(sms);
 		
+	}
+	
+	public void set_product_names(){
+		product_names.clear();
+		List<Product> products = db.getAllProducts();
+		for(Product pr : products)
+        {
+			//adapter.add(pr._name);
+			product_names.add(pr._name);
+			
+        }
 	}
 
 }

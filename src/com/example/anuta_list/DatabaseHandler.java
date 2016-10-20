@@ -62,7 +62,7 @@ public class DatabaseHandler extends SQLiteOpenHelper implements IDatabaseHandle
             cursor.moveToFirst();
         }
 
-        Product Product = new Product(Integer.parseInt(cursor.getString(0)), cursor.getString(1), cursor.getString(2));
+        Product Product = new Product(Integer.parseInt(cursor.getString(0)), cursor.getString(1), Integer.parseInt(cursor.getString(2)));
 
         return Product;
     }
@@ -80,7 +80,7 @@ public class DatabaseHandler extends SQLiteOpenHelper implements IDatabaseHandle
                 Product Product = new Product();
                 Product.setID(Integer.parseInt(cursor.getString(0)));
                 Product.setName(cursor.getString(1));
-                Product.setPhoneNumber(cursor.getString(2));
+                //Product.setPhoneNumber(cursor.getString(2));
                 ProductList.add(Product);
             } while (cursor.moveToNext());
         }
@@ -94,7 +94,7 @@ public class DatabaseHandler extends SQLiteOpenHelper implements IDatabaseHandle
 
         ContentValues values = new ContentValues();
         values.put(KEY_NAME, Product.getName());
-        values.put(KEY_SECT_NO, Product.getPhoneNumber());
+        //values.put(KEY_SECT_NO, Product.getPhoneNumber());
 
         return db.update(TABLE_LIST, values, KEY_ID + " = ?",
                 new String[] { String.valueOf(Product.getID()) });
@@ -103,7 +103,7 @@ public class DatabaseHandler extends SQLiteOpenHelper implements IDatabaseHandle
     @Override
     public void deleteProduct(Product Product) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_LIST, KEY_ID + " = ?", new String[] { String.valueOf(Product.getID()) });
+        db.delete(TABLE_LIST, KEY_NAME + " = ?", new String[] { Product._name});
         db.close();
     }
 

@@ -4,12 +4,12 @@ public class Product {
 
     int _id;
     String _name;
-    String _category;
+    int _category;
 
     public Product(){
     }
 
-    public Product(int id, String name, String __category){
+    public Product(int id, String name, int __category){
         this._id = id;
         this._name = name;
         this._category = __category;
@@ -17,7 +17,7 @@ public class Product {
 
     public Product(String name, String __category){
         this._name = name;
-        this._category = __category;
+        this._category = _category;
     }
 
     public int getID(){
@@ -36,12 +36,8 @@ public class Product {
         this._name = name;
     }
 
-    public String getPhoneNumber(){
-        return this._category;
-    }
+   
 
-    public void setPhoneNumber(String _category){
-        this._category = _category;
-    }
+   
 
 }
