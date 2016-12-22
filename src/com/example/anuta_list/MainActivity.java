@@ -28,7 +28,8 @@ public class MainActivity extends Activity {
 	// Создаём адаптер ArrayAdapter, чтобы привязать массив к ListView
 	public ArrayAdapter<String> adapter ;
 	private DatabaseHandler db;
-	
+	private ListView lv;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -51,9 +52,25 @@ public class MainActivity extends Activity {
 			product_names.add(pr._name);
 			
         }
-			
+
+		String colors[] = {"Каждый", "Охотник", "Желает", "Знать", "Где", "Сидит", "Фазан"};
+
+		/*lv = (ListView) findViewById(R.id.custom_list_item);
+		CustomArrayAdapter listAdapter = new CustomArrayAdapter(this, product_names);
+		lv.setAdapter(listAdapter);
+		*/
+
+
+		//Данные для ListView:
+       // String colors[] = {"Каждый", "Охотник", "Желает", "Знать", "Где", "Сидит", "Фазан"};
+
+
+
+        CustomArrayAdapter listAdapter = new CustomArrayAdapter(this, colors);
+        
+		//adapter = new ArrayAdapter<String>(this,R.layout.custom_list_item, product_names);
 		adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, product_names);
-		adapter.setNotifyOnChange(true);
+		//adapter.setNotifyOnChange(true);
 		
 				
 		// Привяжем массив через адаптер к ListView		
@@ -74,7 +91,8 @@ public class MainActivity extends Activity {
 			}
 		});
 		
-				
+
+		//Добавление нового продукта
 		Button btnPlus = (Button) findViewById(R.id.buttonPlus);
 		
 		OnClickListener oclBtnOk = new OnClickListener() {

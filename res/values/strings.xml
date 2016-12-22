@@ -6,5 +6,6 @@
     <string name="action_send">Отправить СМС</string>
     <string name="title_activity_send_sms">SendSmsActivity</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_splash_screen">SplashScreen</string>
 
 </resources>
