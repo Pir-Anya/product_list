@@ -26,7 +26,7 @@ public class MainActivity extends Activity {
 	// Создаём пустой массив для хранения имен продуктов
 	public ArrayList<String> product_names= new ArrayList<String>();
 	// Создаём адаптер ArrayAdapter, чтобы привязать массив к ListView
-	public ArrayAdapter<String> adapter ;
+	public  CustomArrayAdapter adapter ;
 	private DatabaseHandler db;
 	private ListView lv;
 
@@ -42,51 +42,34 @@ public class MainActivity extends Activity {
 
 		
 		db = new DatabaseHandler(this);
-		
-		//set_product_names();
+
+		adapter = new CustomArrayAdapter(this,  product_names.toArray(new String[product_names.size()]));
+		listView.setAdapter(adapter);
+		adapter.setNotifyOnChange(true);
+
+
 		//заполняем массив данными из базы
 		List<Product> products = db.getAllProducts();
 		for(Product pr : products)
         {
-			//adapter.add(pr._name);
+		//	adapter.add(pr._name);
 			product_names.add(pr._name);
 			
         }
-
-		String colors[] = {"Каждый", "Охотник", "Желает", "Знать", "Где", "Сидит", "Фазан"};
-
-		/*lv = (ListView) findViewById(R.id.custom_list_item);
-		CustomArrayAdapter listAdapter = new CustomArrayAdapter(this, product_names);
-		lv.setAdapter(listAdapter);
-		*/
-
-
-		//Данные для ListView:
-       // String colors[] = {"Каждый", "Охотник", "Желает", "Знать", "Где", "Сидит", "Фазан"};
-
-
-
-        CustomArrayAdapter listAdapter = new CustomArrayAdapter(this, colors);
-        
-		//adapter = new ArrayAdapter<String>(this,R.layout.custom_list_item, product_names);
-		adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, product_names);
-		//adapter.setNotifyOnChange(true);
-		
-				
-		// Привяжем массив через адаптер к ListView		
-		listView.setAdapter(adapter);
-
 		//удаляет продукт из списка
 		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View itemClicked, int position,
 					long id) {
-				Toast.makeText(getApplicationContext(), ((TextView) itemClicked).getText(),
-				        Toast.LENGTH_SHORT).show();
+				   Toast.makeText(getApplicationContext(), ((TextView) itemClicked).getText(), Toast.LENGTH_SHORT).show();
 				   String txt_clicked = (String)((TextView) itemClicked).getText();
 				   Product pr = new Product(0,txt_clicked ,0);
 				   db.deleteProduct(pr);
 				   set_product_names();
+				   adapter.remove(txt_clicked);
+				   //adapter.clear();
+				 //  adapter.updateList(product_names.toArray(new String[product_names.size()]) );
+				 //  adapter.updateList( product_names.toArray(new String[product_names.size()]));
 				   adapter.notifyDataSetChanged();
 			}
 		});
@@ -98,7 +81,6 @@ public class MainActivity extends Activity {
 		OnClickListener oclBtnOk = new OnClickListener() {
 		    @Override
 		    public void onClick(View v) {
-		        // TODO Auto-generated method stub
 		    	addData();
 		    	set_product_names();
 		    	adapter.notifyDataSetChanged();
@@ -143,11 +125,7 @@ public class MainActivity extends Activity {
 	
 	//отправка продуктов по Смс
 	public void gotosendSmsActivity(){
-		/*Intent intent = new Intent(this, SendSmsActivity.class);
-		intent.putExtra("sendData", "dffdsgdf");
-		startActivity(intent);
-		*/
-		
+
 	    String toSms="smsto:";
 	    String catname = "";
 	    for (int i = 0; i < product_names.size(); i++) {
@@ -163,12 +141,12 @@ public class MainActivity extends Activity {
 	}
 	
 	public void set_product_names(){
-		product_names.clear();
+		this.product_names.clear();
 		List<Product> products = db.getAllProducts();
 		for(Product pr : products)
         {
 			//adapter.add(pr._name);
-			product_names.add(pr._name);
+			this.product_names.add(pr._name);
 			
         }
 	}
